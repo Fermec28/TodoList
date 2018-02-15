@@ -2,13 +2,6 @@
 <html>
 <head>
 
-<!-- Falta 
-
-	Link para eliminar
-	funcionalidad para cambiar estado los todo -> done y done -> todo
-	como se va a ver ?
-
- -->
 	<title>Tareas</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -16,17 +9,53 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
- 	<div class="container">
- 	<h1>To do List</h1>
- 	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-  	Crea una Nueva Tarea
-   	</button>
+
+  
+
+ 	<div class="container">  
+
+   <div class="row">
+    <div class="col">
+      <h1>To do List</h1>
+    </div>
+    <div class="col">
+     
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    Crea una Nueva Tarea
+   </button>
+    </div>
+  </div>
+
+ 
 
  	<div class="row">
  		<%if @tareas%>
- 			<ul>
- 			<% @tareas.each do |tarea|%>
- 				<li> <%= tarea["title"] %> </li>
+ 			<ul class="list-group">
+ 			<% @tareas.each do |tarea|%>            
+ 			  <li class="<%=  tarea['done'] ?  'list-group-item active': 'list-group-item'%>"> <%= tarea["title"] %>
+        
+
+          <form action="/tareas/<%= tarea['id'] %>" method="post" id="entryform">
+          <input type="hidden" name="_method" value="DELETE">
+          <div class="form-group">
+          <input type="submit"  class="btn btn-danger" value="Eliminar">          
+          </div>          
+          </form>
+       
+        <% unless tarea['done'] %>
+
+          <form action="/tareas/<%= tarea['id'] %>" method="post" id="entryform">
+          <input type="hidden" name="_method" value="PATCH">
+          <div class="form-group">
+          <input type="submit"  class="btn btn-success" value="Realizado">          
+          </div>          
+          </form>     
+        <%end%>  
+        </li>
+
+        
  			<%end %>
  			</ul>
  		<%end%>

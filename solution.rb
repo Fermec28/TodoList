@@ -14,7 +14,13 @@ post '/tareas' do
 	erb :tareas	
 end
 
-delete 'tareas/:id'
+patch '/tareas/:id' do
+	Tarea.update(params[:id])
+	@tareas= Tarea.all
+	erb :tareas	
+end
+
+delete '/tareas/:id' do 
 	Tarea.destroy(params[:id])
 	@tareas= Tarea.all
 	erb :tareas	
